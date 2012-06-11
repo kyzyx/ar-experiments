@@ -16,7 +16,7 @@ class App {
 		virtual void onRender();
 		virtual void onCleanup();
 	protected:
-		bool initSDL();
+		virtual bool initSDL();
 		bool running;
 		SDLHandler* handler;
 		SDL_Surface* screen;

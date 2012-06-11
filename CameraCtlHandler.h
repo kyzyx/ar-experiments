@@ -1,37 +1,47 @@
 #pragma once
-#include <SDL_opengl.h>
-
-#include "OSGApp.h"
+#include <SDL.h>
+#include <gl\glew.h>
 #include "sdlhandler.h"
-#include <osg\ref_ptr>
-#include <osg\CameraNode>
-
-using namespace osg;
-
-class OSGApp;
 
 class CameraCtlHandler :
 	public SDLHandler
 {
 public:
 	CameraCtlHandler(void);
-	CameraCtlHandler(OSGApp* myapp, CameraNode* cam);
+	CameraCtlHandler(App* myapp, int width, int height, int yfov);
 	~CameraCtlHandler(void);
 
-	void update();
+	virtual void update();
 	void OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode);
 	void OnKeyUp(SDLKey sym, SDLMod mod, Uint16 unicode);
+	void setCamera();
 
 protected:
-	double translateSpeed;
-	double rotateSpeed;
-	OSGApp* app;
-	CameraNode* camera;
+	enum {
+        TRANS_UP    = 1,
+        TRANS_DOWN  = 2,
+        TRANS_LEFT  = 4,
+        TRANS_RIGHT = 8,
+        TRANS_FORWARD  = 16,
+        TRANS_BACKWARD = 32,
+        ROT_UP    = 64,
+        ROT_DOWN  = 128,
+        ROT_LEFT  = 256,
+        ROT_RIGHT = 512
+    };
+
+	GLfloat translateSpeed;
+	GLfloat rotateSpeed;
+	App* app;
 
 	Uint32 move;
 
-	Vec3 eye;
-	Vec3 towards;
-	Vec3 up;
+	int w;
+	int h;
+	GLfloat p;
+	GLfloat eye[3];
+	GLfloat towards[3];
+	GLfloat up[3];
+	GLfloat right[3];
 };
 

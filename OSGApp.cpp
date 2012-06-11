@@ -1,9 +1,9 @@
-#include <SDL_OpenGL.h>
+#include <SDL.h>
 #include <osg\PositionAttitudeTransform>
 #include <osgUtil\SceneView>
 #include <osgDB\ReadFile>
 #include "OSGApp.h"
-#include "CameraCtlHandler.h"
+#include "OSGCameraCtlHandler.h"
 
 #include <iostream>
 
@@ -40,7 +40,7 @@ bool OSGApp::onInit() {
 		Vec3(0, 0, 0),     // Towards
 		Vec3(0, 0, 1));    // Up
 
-	handler = new CameraCtlHandler(this, sceneView->getCamera());
+	handler = new OSGCameraCtlHandler(this, sceneView->getCamera());
 
 	// Construct scene
 	root = new Group();
