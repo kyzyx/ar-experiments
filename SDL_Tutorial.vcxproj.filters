@@ -21,9 +21,6 @@
     <ClInclude Include="GLApp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="OSGApp.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="SDLHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -45,9 +42,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="OSGApp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SDLHandler.cpp">
