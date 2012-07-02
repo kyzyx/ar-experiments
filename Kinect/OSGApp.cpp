@@ -45,14 +45,34 @@ bool OSGApp::onInit() {
 	// Construct scene
 	root = new Group();
 
-	ref_ptr<Node> node = osgDB::readNodeFile("C:/OpenSceneGraph/data/cow.osg");
+	//ref_ptr<Node> node = osgDB::readNodeFile("C:/OpenSceneGraph/data/cow.osg");
+    // Phantom object
+	ref_ptr<Node> node1 = osgDB::readNodeFile("hand.obj");
+	if (!node1) {
+        std::cerr << "Could not find object file" << std::endl;
+		return false;
+	}
+    PositionAttitudeTransform* pat1 = new PositionAttitudeTransform();
+    pat1->setPosition(Vec3d(0,-2,0));
+    pat1->setAttitude(Quat(-1.57, Vec3d(1,0,0)));
+    pat1->addChild(node1);
+    // Make it a phantom!
+    StateSet* ss = pat1->getOrCreateStateSet();
+    ColorMask* cm = new ColorMask(false, false, false, false);
+    ss->setAttributeAndModes(cm, StateAttribute::ON);
+    ss->setRenderBinDetails(-1000, "RenderBin", StateSet::USE_RENDERBIN_DETAILS);
+
+    // virtual object
+	ref_ptr<Node> node = osgDB::readNodeFile("hand.obj");
 	if (!node) {
+        std::cerr << "Could not find object file" << std::endl;
 		return false;
 	}
 	PositionAttitudeTransform* pat = new PositionAttitudeTransform();
-	//pat->setPosition(Vec3d(0,0,0));
+    pat->setScale(Vec3d(2,2,2));
 	pat->addChild(node);
 	root->addChild(pat);
+	root->addChild(pat1);
 
 	/*Geode* geode = new Geode();
 	geode->addDrawable(new ShapeDrawable(new Cone(Vec3(0,0,0), 1, 1)));
