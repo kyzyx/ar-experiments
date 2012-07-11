@@ -24,7 +24,7 @@ WiimotePointTracker::WiimotePointTracker(void)
 	}
 	updatethread = 0;
 
-	InitializeCriticalSection(&cs);
+	InitializeCriticalSectionAndSpinCount(&cs,0x200);
 }
 
 
@@ -72,6 +72,8 @@ void WiimotePointTracker::update() {
 						}
 						else {
 							++visible[i];
+							coords[2*i] = -1;
+							coords[2*i+1] = -1;
 						}
 						LeaveCriticalSection(&cs);
 					}

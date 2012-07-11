@@ -1,5 +1,7 @@
 #include <Windows.h>
 #include "WiimotePointTracker.h"
+#include "tracker.h"
+#include "Camera.h"
 
 #include <gl\GL.h>
 #include <gl\GLU.h>
@@ -11,6 +13,8 @@ int height = 768;
 void draw();
 
 WiimotePointTracker* wpt = NULL;
+Tracker* t = NULL;
+vector<double> tcoords(8,-1);
 int coords[8];
 
 
@@ -23,6 +27,9 @@ void cleanup() {
 	if (wpt) {
 		wpt->stopTracking();
 		delete wpt;
+	}
+	if (t) {
+		delete t;
 	}
 	exit(0);
 }
@@ -52,34 +59,43 @@ bool init(int argc, char* argv[]) {
 	// Construct WiimotePointTracker
 	wpt = new WiimotePointTracker();
 	wpt->startTracking();
+
+	t = new Tracker();
     return true;
 }
 
 void updateWiimote() {
 	// Fetch from wiimotepointtracker
 	wpt->getCoords(coords);
+	glColor3f(1.0,1.0,1.0);
 	for (int i = 0; i < 4; ++i) {
-		glColor3f(0.33*i,0.33*i,0.33*i);
 		glVertex3f(coords[2*i], height - coords[2*i+1], 0);
+		tcoords[2*i] = coords[2*i];
+		tcoords[2*i+1] = coords[2*i+1];
 	}
+}
+
+void orthoCamera() {
+	// Camera setup
+    glViewport(0, 0, width, height);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(0, width, height, 0, 1, -1);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
 }
 
 void draw() {
 	glClear(GL_COLOR_BUFFER_BIT);
-	glColor3f(0.f,0.f,1.f);
-	glBegin(GL_QUADS);
-		glTexCoord2f(0.0f, 0.0f);
-		glVertex3f(0, 0, 0);
-		glTexCoord2f(1.0f, 0.0f);
-		glVertex3f(width, 0, 0);
-		glTexCoord2f(1.0f, 1.0f);
-		glVertex3f(width, height, 0.0f);
-		glTexCoord2f(0.0f, 1.0f);
-		glVertex3f(0, height, 0.0f);
-	glEnd();
+	orthoCamera();
 	glBegin(GL_POINTS);
 	updateWiimote();
 	glEnd();
+	Camera cam = t->getPosition(tcoords);
+	cam.OpenGLCamera();
+	cam.Print();
+	glColor3f(1.0,0,0);
+	glutWireTeapot(1.0);
 	glutSwapBuffers();
 }
 
@@ -89,14 +105,6 @@ int main(int argc, char* argv[]) {
     glClearColor(0,0,0,0);
     glClearDepth(1.0f);
     glEnable(GL_TEXTURE_2D);
-
-    // Camera setup
-    glViewport(0, 0, width, height);
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glOrtho(0, width, height, 0, 1, -1);
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
 
 	glPointSize(4);
 	glutMainLoop();

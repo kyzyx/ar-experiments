@@ -38,5 +38,6 @@ public:
 	Point3f getRight()   const { return right; }
 
 	void ApplyRT(Mat& rvec, Mat& tvec);
-	void OpenGLCamera(int eye = CENTER, double separation = 0.);
+	void OpenGLCamera(int stereoscopy = CENTER, double separation = 0.);
+	void Print();
 };
