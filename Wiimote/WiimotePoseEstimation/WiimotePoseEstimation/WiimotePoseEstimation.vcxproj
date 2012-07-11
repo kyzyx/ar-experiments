@@ -15,10 +15,12 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="TestTracker.cpp" />
     <ClCompile Include="tracker.cpp" />
+    <ClCompile Include="WiimotePointTracker.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="tracker.h" />
+    <ClInclude Include="WiimotePointTracker.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{C0525113-B148-44EB-9463-71302FD9C07B}</ProjectGuid>

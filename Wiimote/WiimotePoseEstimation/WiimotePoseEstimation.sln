@@ -5,8 +5,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WiimotePoseEstimation", "Wi
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1EA85724-FC66-4443-9EE4-826FAEEFD96C}"
 	ProjectSection(SolutionItems) = preProject
-		Local.testsettings = Local.testsettings
-		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
 		WiimotePoseEstimation.vsmdi = WiimotePoseEstimation.vsmdi
 	EndProjectSection
 EndProject
