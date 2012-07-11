@@ -18,6 +18,10 @@ void Camera::ApplyRT(Mat& rvec, Mat& tvec) {
 	eye = *(e.ptr<Point3f>(0));
 	towards = *(t.ptr<Point3f>(0));
 	up = *(u.ptr<Point3f>(0));
+	
+	towards *= 1/norm(towards);
+	up *= 1/norm(up);
+	right = towards.cross(up);
 }
 
 void Camera::OpenGLCamera(int stereoscopy, double separation) {

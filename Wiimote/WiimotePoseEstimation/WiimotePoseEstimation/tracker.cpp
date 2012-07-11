@@ -11,7 +11,7 @@ using namespace cv;
 Tracker::Tracker() {
 	// TODO: Measure object distances
 	object.push_back(Point3f(-50,150,200));
-	object.push_back(Point3f(325,100,220));
+	object.push_back(Point3f(325,350,220));
 	object.push_back(Point3f(250,20,220));
 	object.push_back(Point3f(600,180,200));
 	// TODO: measure directions relative to object
@@ -19,8 +19,8 @@ Tracker::Tracker() {
 	base_camera = Camera(Point3f(0,0,0), Point3f(0,0,1), Point3f(0,1,0));
 	// Wiimote camera intrinsics from http://idav.ucdavis.edu/~okreylos/ResDev/Wiimote/Technology.html
 	cam = (Mat_<double>(3,3) << 
-		   1280,    0, 512,
-		      0, 1280, 384,
+		   128,    0, 512,
+		      0, 128, 384,
 		      0,    0,   1);
 }
 Camera Tracker::getPosition(vector<double>& coords) {		
@@ -30,8 +30,9 @@ Camera Tracker::getPosition(vector<double>& coords) {
 		image.push_back(Point2f(coords[i], coords[i+1]));
 	}
 
-	Mat rvec, tvec, r;
-	solvePnPRansac(object,image,cam,noArray(),rvec,tvec);
+	Mat rvec(3,1,CV_32FC1);
+	Mat tvec(3,1,CV_32FC1);
+	solvePnP(object,image,cam,noArray(),rvec,tvec,false,CV_P3P);
 	//gpu::solvePnPRansac(object,image,cam,,rvec,tvec);
 
 	// Filter rvec, tvec?

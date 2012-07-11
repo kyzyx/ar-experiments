@@ -6,6 +6,9 @@
 #include <gl\GL.h>
 #include <gl\GLU.h>
 #include <gl\glut.h>
+#include <iostream>
+
+using namespace std;
 
 int width = 1024;
 int height = 768;
@@ -64,15 +67,50 @@ bool init(int argc, char* argv[]) {
     return true;
 }
 
+void cleancoords() {
+	// Assume highest, lowest point will be constant
+	int left = -1, up = -1, down = -1, right = -1;
+	int xmax = -1;
+    int xmin = 2000;
+	int ymax = -1;
+    int ymin = 2000;
+	for (int i = 0; i < 4; ++i) {
+		if (coords[2*i] > xmax) {
+			xmax = coords[2*i];
+			right = i;
+		}
+		if (coords[2*i] < xmin) {
+			xmin = coords[2*i];
+			left = i;
+		}
+		if (coords[2*i+1] > ymax) {
+			ymax = coords[2*i+1];
+			up = i;
+		}
+		if (coords[2*i+1] < ymin) {
+			ymin = coords[2*i+1];
+			down = i;
+		}
+	}
+	cout << left << up << down << right << endl;
+	tcoords[0] = coords[2*left];
+	tcoords[1] = coords[2*left+1];
+	tcoords[2] = coords[2*up];
+	tcoords[3] = coords[2*up+1];
+	tcoords[4] = coords[2*down];
+	tcoords[5] = coords[2*down+1];
+	tcoords[6] = coords[2*right];
+	tcoords[7] = coords[2*right+1];
+}
+
 void updateWiimote() {
 	// Fetch from wiimotepointtracker
 	wpt->getCoords(coords);
 	glColor3f(1.0,1.0,1.0);
 	for (int i = 0; i < 4; ++i) {
 		glVertex3f(coords[2*i], height - coords[2*i+1], 0);
-		tcoords[2*i] = coords[2*i];
-		tcoords[2*i+1] = coords[2*i+1];
 	}
+	cleancoords();
 }
 
 void orthoCamera() {
