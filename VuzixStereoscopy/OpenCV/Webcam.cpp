@@ -15,7 +15,7 @@ IBaseFilter					*g_pSrcFilterLeft=NULL; // Source Rendering filter
 IBaseFilter					*g_pSrcFilterRight=NULL;// Source Rendering filter
 
 HRESULT SetCC(IAMCameraControl* ctl, tagCameraControlProperty p, long n, bool AutoOff=true) {
-	long Min, Max, Step, Default, Flags, Val;
+	long Min, Max, Step, Default, Flags;
 	HRESULT hr;
 		// EXPOSURE: Get the range and default value. 
 		hr = ctl->GetRange(p, &Min, &Max, &Step,
@@ -36,10 +36,11 @@ HRESULT SetCC(IAMCameraControl* ctl, tagCameraControlProperty p, long n, bool Au
 			hr = ctl->Set(p, Default, Flags);
 		}
 		if (FAILED(hr)) return hr;
+		return S_OK;
 }
 
 HRESULT SetVPA(IAMVideoProcAmp* ctl, tagVideoProcAmpProperty p, long n, bool AutoOff=true) {
-	long Min, Max, Step, Default, Flags, Val;
+	long Min, Max, Step, Default, Flags;
 	HRESULT hr;
 		// EXPOSURE: Get the range and default value. 
 		hr = ctl->GetRange(p, &Min, &Max, &Step,
@@ -60,6 +61,7 @@ HRESULT SetVPA(IAMVideoProcAmp* ctl, tagVideoProcAmpProperty p, long n, bool Aut
 			hr = ctl->Set(p, Default, Flags);
 		}
 		if (FAILED(hr)) return hr;
+		return S_OK;
 }
 
 HRESULT SetCamera() {
